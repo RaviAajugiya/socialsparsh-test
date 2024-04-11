@@ -7,6 +7,7 @@ import {
   GoogleSignin,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
+import { axios } from "axios";
 
 export default function App() {
   const webViewRef = useRef(null);
@@ -38,7 +39,32 @@ export default function App() {
             if (hasPlayService) {
               GoogleSignin.signIn()
                 .then((userInfo) => {
-                  console.log(userInfo);
+                  axios
+                    .post(
+                      "https://api.socialsparsh.com/" +
+                        "POSTSocial/ConnectGoogle",
+                      {
+                        code: userInfo.serverAuthCode,
+                        RedirectUrl:
+                          "https://socialsparsh-app.firebaseapp.com/__/auth/handler",
+                      },
+                      {
+                        headers: {
+                          Authorization: `Bearer ${token}`,
+                        },
+                      }
+                    )
+                    .then(async (resp) => {
+                      if (resp.data.success === true) {
+                        webViewRef.current.reload();
+                      }
+                    })
+                    .catch(async (err) => {
+                      console.log(
+                        "🚀 ~ file: google.js:51 ~ connectToGoogle ~ err:",
+                        err
+                      );
+                    });
                 })
                 .catch((e) => {
                   console.log("ERROR IS: " + e);
