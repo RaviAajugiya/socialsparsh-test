@@ -13,16 +13,41 @@ export default function App() {
   const [message, setMessage] = useState({});
   const [info, setInfo] = useState();
 
-  console.log("info", info);
-
   useEffect(() => {
     if (typeof message.data === "string") {
       const { auth, token } = JSON.parse(message.data);
       if (auth === "GoogleLogin") {
-        GoogleSignin.configure();
-        GoogleSignin.hasPlayServices();
-        const userInfo = GoogleSignin.signIn();
-        setInfo(userInfo);
+        console.log("GoogleLogin");
+        GoogleSignin.configure({
+          offlineAccess: true,
+          forceCodeForRefreshToken: true,
+          scopes: [
+            // "https://www.googleapis.com/auth/business.manage",
+            "email",
+            "profile",
+            "openid",
+            "https://www.googleapis.com/auth/userinfo.profile",
+            "https://www.googleapis.com/auth/userinfo.email",
+          ],
+          webClientId:
+            "340572475372-vjnrvbmqh28enbkd6mvsu7fiqimedd1u.apps.googleusercontent.com",
+        });
+
+        GoogleSignin.hasPlayServices()
+          .then((hasPlayService) => {
+            if (hasPlayService) {
+              GoogleSignin.signIn()
+                .then((userInfo) => {
+                  console.log(userInfo);
+                })
+                .catch((e) => {
+                  console.log("ERROR IS: " + e);
+                });
+            }
+          })
+          .catch((e) => {
+            console.log("ERROR IS: " + e);
+          });
       }
     }
   }, [message]);
