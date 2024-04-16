@@ -62,35 +62,32 @@
 
 3.  **Generate Android and iOS Native Code:**
 
-    - Run the following command to generate Android and iOS native code:
+        - Run the following command to generate Android and iOS native code:
+          ```
+          npx expo prebuild
+          ```
+        - This command is used to prebuild the native code for Android and iOS platforms. It prepares the necessary native code files that are required for building the app on Android Studio (for Android) and Xcode (for iOS) later in the development process.
+
+    <details>
+    <summary>4. **Run and Build the Project:**</summary>
+
+- Go back to Visual Studio Code.
+- You are now ready to run and build the project using multiple methods:
+
+  - **Using Expo Go (For Basic Testing):**
+
+    - Install Expo Go on your Android device from the Google Play Store.
+    - Run the following command in the terminal to start the Expo server:
       ```
-      npx expo prebuild
+      npm start
       ```
-    - This command is used to prebuild the native code for Android and iOS platforms. It prepares the necessary native code files that are required for building the app on Android Studio (for Android) and Xcode (for iOS) later in the development process.
+    - Scan the QR code displayed in the terminal or Metro Bundler with Expo Go to open the app.
 
-4.  **Run and Build the Project:**
+  - **On a Native Android Device:**
+    - Ensure your Android device is connected to your computer via USB and USB debugging is enabled.
+    - Run the following command in the terminal to build and run the app on your device:
+      ```
+      npm run android
+      ```
 
-    <code>
-          <details>
-          <summary>4. **Run and Build the Project:**</summary>
-
-- Go back to Visual Studio Code. - You are now ready to run and build the project using multiple methods:
-
-             - **Using Expo Go (For Basic Testing):**
-               - Install Expo Go on your Android device from the Google Play Store.
-               - Run the following command in the terminal to start the Expo server:
-                 ```
-                 npm start
-                 ```
-               - Scan the QR code displayed in the terminal or Metro Bundler with Expo Go to open the app.
-
-             - **On a Native Android Device:**
-               - Ensure your Android device is connected to your computer via USB and USB debugging is enabled.
-               - Run the following command in the terminal to build and run the app on your device:
-                 ```
-                 npm run android
-                 ```
-
-  </code>
-
-        </details>
+</details>
