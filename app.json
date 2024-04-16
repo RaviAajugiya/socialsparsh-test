@@ -11,18 +11,35 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": [
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "2664121133713614",
+          "clientToken": "4741c8385c27a506b79e5e587f12c0a2",
+          "displayName": "Social Sparsh",
+          "scheme": "fb2664121133713614",
+          "advertiserIDCollectionEnabled": false,
+          "autoLogAppEventsEnabled": false,
+          "isAutoInitEnabled": true,
+          "iosUserTrackingPermission": false
+        }
+      ],
+      "@react-native-google-signin/google-signin"
+    ],
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true
-    },
+    },  
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ravi2003.socialsparshtest"
+      "package": "com.weybee.test"
     },
     "web": {
       "favicon": "./assets/favicon.png"

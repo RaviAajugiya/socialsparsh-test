@@ -1,0 +1,4 @@
+Keystore Password : #SocialSparsh123
+Keystore Alias    : SocialSparsh
+Alias Password    : #SocialSparsh123
+Organization      : SocialSparsh

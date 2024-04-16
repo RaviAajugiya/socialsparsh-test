@@ -8,12 +8,14 @@ import {
   statusCodes,
 } from "@react-native-google-signin/google-signin";
 import { axios } from "axios";
+import { LoginManager } from "react-native-fbsdk-next";
+import { connectToFacebook } from "./facebook";
 
 export default function App() {
   const webViewRef = useRef(null);
   const [message, setMessage] = useState({});
   const [info, setInfo] = useState();
-
+  console.log(message);
   useEffect(() => {
     if (typeof message.data === "string") {
       const { auth, token } = JSON.parse(message.data);
@@ -23,7 +25,7 @@ export default function App() {
           offlineAccess: true,
           forceCodeForRefreshToken: true,
           scopes: [
-            // "https://www.googleapis.com/auth/business.manage",
+            "https://www.googleapis.com/auth/business.manage",
             "email",
             "profile",
             "openid",
@@ -34,46 +36,48 @@ export default function App() {
             "340572475372-vjnrvbmqh28enbkd6mvsu7fiqimedd1u.apps.googleusercontent.com",
         });
 
-        GoogleSignin.hasPlayServices()
-          .then((hasPlayService) => {
-            if (hasPlayService) {
-              GoogleSignin.signIn()
-                .then((userInfo) => {
-                  axios
-                    .post(
-                      "https://api.socialsparsh.com/" +
-                        "POSTSocial/ConnectGoogle",
-                      {
-                        code: userInfo.serverAuthCode,
-                        RedirectUrl:
-                          "https://socialsparsh-app.firebaseapp.com/__/auth/handler",
-                      },
-                      {
-                        headers: {
-                          Authorization: `Bearer ${token}`,
-                        },
-                      }
-                    )
-                    .then(async (resp) => {
-                      if (resp.data.success === true) {
-                        webViewRef.current.reload();
-                      }
-                    })
-                    .catch(async (err) => {
-                      console.log(
-                        "🚀 ~ file: google.js:51 ~ connectToGoogle ~ err:",
-                        err
-                      );
-                    });
+        const debugging = false;
+
+        GoogleSignin.hasPlayServices().then((hasPlayService) => {
+          if (hasPlayService) {
+            GoogleSignin.signIn().then((userInfo) => {
+              console.log("====================================");
+              console.log(userInfo);
+              console.log("====================================");
+              fetch(
+                "https://api.socialsparsh.staging.weybee.in/POSTSocial/ConnectGoogle",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: JSON.stringify({
+                    code: userInfo.serverAuthCode,
+                    RedirectUrl:
+                      "https://socialsparsh-app.firebaseapp.com/__/auth/handler",
+                  }),
+                }
+              )
+                .then((resp) => {
+                  webViewRef.current.reload();
+                  console.log("resp", resp);
                 })
-                .catch((e) => {
-                  console.log("ERROR IS: " + e);
+                .catch((err) => {
+                  console.log(
+                    "🚀 ~ file: google.js:51 ~ connectToGoogle ~ err:",
+                    err
+                  );
                 });
-            }
-          })
-          .catch((e) => {
-            console.log("ERROR IS: " + e);
-          });
+            });
+          }
+        });
+      }
+
+      if (auth === "FacebookLogin") {
+        connectToFacebook(token).finally(() => {
+          webViewRef.current.reload();
+        });
       }
     }
   }, [message]);
@@ -81,7 +85,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={[styles.screen, { display: "flex" }]}>
-        <WebView
+        {/* <WebView
           source={{ uri: "https://app.socialsparsh.com" }}
           ref={webViewRef}
           onLoadEnd={(e) => {
@@ -94,7 +98,8 @@ export default function App() {
           onMessage={(event) => {
             setMessage(event.nativeEvent);
           }}
-        />
+        /> */}
+        n
       </SafeAreaView>
     </SafeAreaProvider>
   );
